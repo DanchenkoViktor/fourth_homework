@@ -1,5 +1,8 @@
 package ru.edu;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class StringUtils {
 
     /**
@@ -10,6 +13,24 @@ public class StringUtils {
      * @param str - string without delimiters (spaces, new lines, etc)
      */
     public String findMaxSubstring(String str) {
-        throw new RuntimeException("Not implemented");
+        if (str == null || str.length() == 0)
+            return null;
+        String resSub = "";
+        for (int startIndex = 0; startIndex < str.length(); startIndex++) {
+            Set<Character> tmpSub = new HashSet<>();
+            int endIndex = startIndex;
+            for (; endIndex < str.length(); endIndex++) {
+                char currentChar = str.charAt(endIndex);
+                if (tmpSub.contains(currentChar)) {
+                    break;
+                } else {
+                    tmpSub.add(currentChar);
+                }
+            }
+            if (resSub.length() < endIndex - startIndex) {
+                resSub = str.substring(startIndex, endIndex);
+            }
+        }
+        return resSub.equals("") ? null : resSub;
     }
 }
