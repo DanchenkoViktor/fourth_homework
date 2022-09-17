@@ -1,8 +1,7 @@
 package ru.edu;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
+import java.util.stream.Collectors;
 
 /**
  * School journal.
@@ -11,28 +10,42 @@ public class SchoolJournal {
 
     private class PersonIteratorOverCourse implements Iterator<Person> {
 
+        int index;
+        int courseNumber;
+
         public PersonIteratorOverCourse(int courseNumber) {
-            // should implement
+            this.courseNumber = courseNumber;
+            persons = persons.stream()
+                    .filter(e -> e.getCourse() == courseNumber)
+                    .collect(Collectors.toList());
+            index = -1;
         }
 
         @Override
         public boolean hasNext() {
-
-            // should implement
-            return false;
+            if (index + 1 < persons.size()) {
+                return persons.get(index + 1)
+                        .getCourse() == courseNumber;
+            } else return false;
         }
 
         @Override
         public Person next() {
-
-            // should implement
-            return null;
+            if (hasNext()) {
+                index++;
+                return persons.get(index);
+            } else {
+                throw new NoSuchElementException();
+            }
         }
 
         @Override
         public void remove() {
-
-            // should implement
+            if (persons.size() == 0) {
+                throw new IllegalStateException();
+            }
+            persons.remove(index);
+            index--;
         }
     }
 
